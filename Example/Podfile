@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MotionHUD_Example' do
+  pod 'MotionHUD', :path => '../'
+
+  target 'MotionHUD_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
