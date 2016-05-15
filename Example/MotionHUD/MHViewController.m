@@ -6,7 +6,9 @@
 //  Copyright (c) 2016 Sam Kaufman. All rights reserved.
 //
 
+@import SpriteKit;
 #import "MHViewController.h"
+#import "MHExampleGameScene.h"
 
 @interface MHViewController ()
 
@@ -17,13 +19,37 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    // Configure the view.
+    SKView * skView = (SKView *)self.view;
+    skView.showsFPS = YES;
+    skView.showsNodeCount = YES;
+    skView.showsPhysics = YES;
+    /* Sprite Kit applies additional optimizations to improve rendering performance */
+    skView.ignoresSiblingOrder = YES;
+    
+    // Create and configure the scene.
+    MHExampleGameScene *scene = [MHExampleGameScene nodeWithFileNamed:@"MHExampleGameScene"];
+    scene.scaleMode = SKSceneScaleModeAspectFill;
+    [skView presentScene:scene];
 }
 
-- (void)didReceiveMemoryWarning
+- (BOOL)shouldAutorotate
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    } else {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 @end

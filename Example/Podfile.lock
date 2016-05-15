@@ -1,0 +1,16 @@
+PODS:
+  - MotionHUD (0.1.0)
+
+DEPENDENCIES:
+  - MotionHUD (from `../`)
+
+EXTERNAL SOURCES:
+  MotionHUD:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MotionHUD: b81eb739d26bb8f360510110512f9d50bb42e6ac
+
+PODFILE CHECKSUM: 8759a363162152c045a8d2d6debecbf3d9943405
+
+COCOAPODS: 1.0.0

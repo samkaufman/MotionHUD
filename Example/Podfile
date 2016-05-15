@@ -5,7 +5,5 @@ target 'MotionHUD_Example' do
 
   target 'MotionHUD_Tests' do
     inherit! :search_paths
-
-    
   end
 end
