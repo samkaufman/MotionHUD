@@ -23,29 +23,23 @@
 
 @implementation MHMotionHUDScene
 
--(void)didMoveToView:(SKView *)view {
-
-    [super didMoveToView:view];
-
-    /* Set up the motion manager */
-    if (!self.motionManager) {
-        self.motionManager = [CMMotionManager new];
-        self.motionManager.deviceMotionUpdateInterval = 0.1;
-    }
-    [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
-
-    /* Create the "controls" */
-    [self buildDisplayNodes];
-}
-
 - (void)willMoveFromView:(SKView *)view {
     [super willMoveFromView:view];
     [self.motionManager stopDeviceMotionUpdates];
+    self.motionManager = nil;
 }
 
 - (void)update:(CFTimeInterval)currentTime {
+    
     [super update:currentTime];
 
+    /* Set up the motion manager if necessary */
+    if (!self.motionManager) {
+        self.motionManager = [CMMotionManager new];
+        self.motionManager.deviceMotionUpdateInterval = 0.1;
+        [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+    }
+    
     // Rebuild every frame to keep position correct even as, for
     // instance, cameras move. It's cheap.
     [self buildDisplayNodes];
