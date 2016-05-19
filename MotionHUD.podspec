@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MotionHUD"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "An SKScene subclass which overlays motion data."
 
 # This description is used to generate tags and improve search results.
