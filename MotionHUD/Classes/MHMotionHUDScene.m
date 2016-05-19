@@ -17,7 +17,6 @@
 @property (strong, nonatomic) NSArray<MHDirectionIndicator *> *directionIndicators;
 @property (strong, nonatomic) NSArray<MHProgressBarNode *> *progressBars;
 @property (strong, nonatomic) CMMotionManager *motionManager;
-@property (assign, nonatomic) UIDeviceOrientation builtForOrientation;
 
 @end
 
@@ -25,16 +24,16 @@
 @implementation MHMotionHUDScene
 
 -(void)didMoveToView:(SKView *)view {
-    
+
     [super didMoveToView:view];
-    
+
     /* Set up the motion manager */
     if (!self.motionManager) {
         self.motionManager = [CMMotionManager new];
         self.motionManager.deviceMotionUpdateInterval = 0.1;
     }
     [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
-    
+
     /* Create the "controls" */
     [self buildDisplayNodes];
 }
@@ -46,13 +45,11 @@
 
 - (void)update:(CFTimeInterval)currentTime {
     [super update:currentTime];
-    
-    /* Rebuild controls if orientation has changed */
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    if (self.builtForOrientation != deviceOrientation) {
-        [self buildDisplayNodes];
-    }
-    
+
+    // Rebuild every frame to keep position correct even as, for
+    // instance, cameras move. It's cheap.
+    [self buildDisplayNodes];
+
     /* Update the pitch bar */
     CMDeviceMotion *motion = self.motionManager.deviceMotion;
     if (motion) {
@@ -67,8 +64,6 @@
 }
 
 - (void)buildDisplayNodes {
-    self.builtForOrientation = [UIDevice currentDevice].orientation;
-    
     [self removeChildrenInArray:self.progressBars ?: @[]];
     [self removeChildrenInArray:self.directionIndicators ?: @[]];
     self.progressBars = [self createProgressBarStackOfSize:2];
@@ -81,13 +76,13 @@
     static const CGFloat kDiameterInPx = 12;
     static const CGFloat kPaddingInPx = 2;
     static const CGFloat kBtmMarginInPx = 3;
-    
+
     CGPoint btmCtrInView = CGPointMake(self.view.frame.size.width / 2.0, self.view.frame.size.height - kBtmMarginInPx);
     CGPoint btmCtr = [self convertPointFromView:btmCtrInView];
     CGPoint topOfBtmCtr = [self convertPointFromView:CGPointMake(btmCtrInView.x, btmCtrInView.y - kDiameterInPx)];
     CGFloat diameter = ABS(topOfBtmCtr.y - btmCtr.y);
     CGFloat padding = kPaddingInPx * (diameter / kDiameterInPx);
-    
+
     NSMutableArray *a = [NSMutableArray arrayWithCapacity:cnt];
     for (int i = 0; i < cnt; i++) {
         MHDirectionIndicator *node = [MHDirectionIndicator directionIndicatorWithSize:CGSizeMake(topOfBtmCtr.y - btmCtr.y, topOfBtmCtr.y - btmCtr.y)];
@@ -99,17 +94,17 @@
 }
 
 - (NSArray<MHProgressBarNode *> *)createProgressBarStackOfSize:(NSUInteger)cnt {
-    
+
     static const CGFloat kHeightInPx = 10;
     static const CGFloat kPaddingInPx = 3;
     static const CGFloat kBtmMarginInPx = 3;
-    
+
     CGPoint btmCtrInView = CGPointMake(self.view.frame.size.width / 2.0, self.view.frame.size.height - kBtmMarginInPx);
     CGPoint btmCtr = [self convertPointFromView:btmCtrInView];
     CGPoint topOfBtmCtr = [self convertPointFromView:CGPointMake(btmCtrInView.x, btmCtrInView.y - kHeightInPx)];
     CGFloat heightInScene = topOfBtmCtr.y - btmCtr.y;
     CGFloat paddingInScene = kPaddingInPx * (kHeightInPx / heightInScene);
-    
+
     NSMutableArray *a = [NSMutableArray arrayWithCapacity:cnt];
     for (int i = 0; i < cnt; i++) {
         MHProgressBarNode *progressBar = [MHProgressBarNode progressBarWithSize:CGSizeMake(50, topOfBtmCtr.y - btmCtr.y)];
