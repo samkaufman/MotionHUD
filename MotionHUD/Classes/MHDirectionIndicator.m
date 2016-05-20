@@ -36,12 +36,14 @@
         [self addChild:self.rotaryNode];
         
         self.boundingCircle = [SKShapeNode shapeNodeWithCircleOfRadius:(smallerDim/2.0)];
+        self.boundingCircle.zPosition = CGFLOAT_MAX - 2;
         self.boundingCircle.lineWidth = 0.5;
         self.boundingCircle.strokeColor = [UIColor whiteColor];
         self.boundingCircle.fillColor = [UIColor colorWithWhite:0.0 alpha:0.3];
         [self.rotaryNode addChild:self.boundingCircle];
         
         self.arrow = [SKShapeNode shapeNodeWithRectOfSize:CGSizeMake(1.0, smallerDim/2.0)];
+        self.arrow.zPosition = CGFLOAT_MAX - 1;
         self.arrow.fillColor = [UIColor whiteColor];
         self.arrow.lineWidth = 0.0;
         self.arrow.position = CGPointMake(0, smallerDim/4.0);
