@@ -60,7 +60,7 @@
 };
 
 - (void)updateArrowRotation {
-    [self.rotaryNode runAction:[SKAction rotateToAngle:self.rotation duration:0.005]];
+    [self.rotaryNode runAction:[SKAction rotateToAngle:self.rotation duration:0.00]];
 }
 
 @end
